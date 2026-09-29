@@ -17,7 +17,7 @@ A página apresenta:
 
 ## Como abrir
 
-Basta abrir o arquivo `revisao.html` em qualquer navegador.
+Basta abrir o arquivo `index.html` em qualquer navegador.
 
 Se preferir rodar em um servidor local:
 
@@ -25,11 +25,11 @@ Se preferir rodar em um servidor local:
 python -m http.server 8000
 ```
 
-Depois acesse `http://localhost:8000/revisao.html`.
+Depois acesse `http://localhost:8000/`.
 
 ## Estrutura
 
-- `revisao.html` — página principal do projeto;
+- `index.html` — página principal do projeto;
 - `README.md` — documentação do projeto;
 - `inicio.png` — imagem de preview do projeto.
 
