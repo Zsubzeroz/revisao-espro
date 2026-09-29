@@ -4,7 +4,7 @@ Projeto de apresentação/estudo sobre Inteligência Emocional, desenvolvido em 
 
 ## Preview
 
-![Preview do projeto](./Screenshot%20from%202026-09-29%2013-41-37.png)
+![Preview do projeto](./inicio.png)
 
 ## Sobre o projeto
 
