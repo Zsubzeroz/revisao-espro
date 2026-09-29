@@ -31,7 +31,7 @@ Depois acesse `http://localhost:8000/revisao.html`.
 
 - `revisao.html` — página principal do projeto;
 - `README.md` — documentação do projeto;
-- `Screenshot from 2026-09-29 13-41-37.png` — imagem de preview do projeto.
+- `inicio.png` — imagem de preview do projeto.
 
 ## Autor
 
