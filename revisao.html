@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão ESPRO - 29/09/26</title>
+<style>
+:root {
+  --base: #09090b; --surface: #18181b; --border: #27272a;
+  --text: #e4e4e7; --muted: #a1a1aa;
+  --blood: #8A0303; --blood-hi: #d61f2c; --blood-deep: #3b0505;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--base); color: var(--text); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 900px; margin: 0 auto; padding: 40px 20px 64px; }
+
+.hero { display: grid; grid-template-columns: 1fr 248px; gap: 32px; align-items: center; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.date { color: var(--blood-hi); font-family: var(--mono); font-size: 13px; }
+h1 { margin: 6px 0 10px; font-size: 34px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; }
+.lead { margin: 0; max-width: 46ch; color: var(--muted); }
+.assumption { margin: 14px 0 0; font-size: 12px; color: var(--muted); border-left: 2px solid var(--blood); padding-left: 10px; }
+
+.board { display: grid; grid-template-columns: repeat(8, 1fr); width: 248px; height: 248px; border: 1px solid var(--blood); }
+.sq { display: grid; place-items: center; font-size: 22px; line-height: 1; color: var(--text); }
+.sq.light { background: var(--surface); }
+.sq.dark { background: var(--blood-deep); }
+.sq.hit { background: var(--blood); }
+
+pre.code { margin: 32px 0; padding: 18px 20px; overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--blood); font: 13px/1.7 var(--mono); }
+.k { color: var(--blood-hi); } .c { color: var(--muted); } .s { color: #e4e4e7; }
+
+h2 { margin: 0 0 4px; font-size: 20px; letter-spacing: -0.01em; }
+.sub { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
+.progress { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.progress .track { flex: 1; height: 4px; background: var(--border); }
+.progress .fill { display: block; height: 100%; width: 0; background: var(--blood-hi); transition: width .2s; }
+.progress output { font: 13px var(--mono); color: var(--muted); }
+button { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; border-radius: 0; }
+button:hover { color: var(--text); border-color: var(--blood-hi); }
+button:focus-visible { outline: 2px solid var(--blood-hi); outline-offset: 2px; }
+
+.cards { border-top: 1px solid var(--border); }
+.card { border-bottom: 1px solid var(--border); }
+.card > button { display: grid; grid-template-columns: 44px 1fr 24px; align-items: center; width: 100%; padding: 16px 4px; border: 0; text-align: left; color: var(--text); font-size: 16px; }
+.card > button:hover { border: 0; background: var(--surface); }
+.piece { font-size: 28px; color: var(--blood-hi); line-height: 1; }
+.chev { color: var(--muted); font-family: var(--mono); transition: transform .15s; }
+.card.open .chev { transform: rotate(90deg); color: var(--blood-hi); }
+.card.open > button .name { font-weight: 700; }
+.answer { display: none; padding: 0 4px 20px 44px; }
+.card.open .answer { display: block; }
+.answer p { margin: 0 0 12px; max-width: 62ch; }
+.analogies { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.analogies div { border: 1px solid var(--border); border-top: 2px solid var(--blood); padding: 10px 12px; font-size: 13.5px; }
+.analogies b { display: block; margin-bottom: 2px; font-size: 12px; color: var(--blood-hi); font-weight: 600; }
+
+.story { margin-top: 48px; padding: 24px 0 0; border-top: 1px solid var(--blood); }
+.story blockquote { margin: 12px 0 0; padding: 0; max-width: 60ch; font-size: 19px; line-height: 1.6; letter-spacing: -0.005em; }
+.story .signature { margin-top: 14px; color: var(--blood-hi); font-family: var(--mono); font-size: 13px; }
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr; }
+  .board { width: 100%; max-width: 248px; }
+  .analogies { grid-template-columns: 1fr; }
+  h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div>
+      <div class="date">29/09/2026</div>
+      <h1>Inteligência emocional</h1>
+      <p class="lead">Capacidade de reconhecer e lidar com as próprias emoções e com as dos outros. No trabalho, decide como você reage ao erro, ao feedback e à pressão.</p>
+      <p class="assumption">Tema assumido a partir do título "Conceit…" da aula. Se o tema for outro, edite o array CONCEPTS no fim do arquivo.</p>
+    </div>
+    <div class="board" id="board" role="img" aria-label="Tabuleiro de xadrez com cinco peças, uma para cada componente"></div>
+  </header>
+
+<pre class="code" aria-label="Resumo em código"><span class="k">class</span> InteligenciaEmocional {
+  autoconsciencia()    <span class="c">// reconhece o que sente e por quê</span>
+  autorregulacao()     <span class="c">// pensa antes de reagir</span>
+  motivacao()          <span class="c">// persiste rumo a um objetivo</span>
+  empatia()            <span class="c">// lê o estado emocional do outro</span>
+  habilidadesSociais() <span class="c">// comunica, negocia, coopera</span>
+}</pre>
+
+  <section aria-labelledby="rev-title">
+    <h2 id="rev-title">Relembrar os 5 componentes</h2>
+    <p class="sub">Tente responder de cabeça antes de abrir cada peça. Modelo de Daniel Goleman.</p>
+    <div class="progress">
+      <span class="track"><i class="fill" id="fill"></i></span>
+      <output id="count" aria-live="polite">0/5</output>
+      <button type="button" id="reset">Recomeçar</button>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="story" aria-labelledby="story-title">
+    <h2 id="story-title">Minha base</h2>
+    <blockquote>
+      <p>Minha vida se baseia na lógica. Do primeiro curso, pago pelo meu avô, aos apoios dos meus pais, eu faço de tudo: toco piano, jogo xadrez, programo, ando de skate e pratico artes marciais.</p>
+      <p>Nada disso seria possível sem apoio e sem instituições como esta, que sempre deram uma força.</p>
+    </blockquote>
+    <div class="signature">Luan Estifer</div>
+  </section>
+</main>
+
+<script>
+const CONCEPTS = [
+  {
+    piece: "♔", name: "Autoconsciência", question: "Perceber o que sinto no momento em que sinto.",
+    meaning: "Identificar as próprias emoções, forças e limites, e como isso afeta o que você faz.",
+    chess: "O rei: tudo depende de saber onde ele está e o que o ameaça. Quem não lê a própria posição perde sem ver o xeque.",
+    code: "Logs e profiler: só corrige o que consegue observar no próprio estado.",
+  },
+  {
+    piece: "♖", name: "Autorregulação", question: "Controlar o impulso e escolher a resposta.",
+    meaning: "Gerir emoções fortes sem deixar que elas comandem a ação, mantendo o foco sob pressão.",
+    chess: "A torre: estrutura e controle. Não capturar por impulso; calcular antes de mover.",
+    code: "try/catch: o erro acontece, mas o programa trata e segue, sem quebrar tudo.",
+  },
+  {
+    piece: "♕", name: "Motivação", question: "Manter energia e direção rumo a um objetivo.",
+    meaning: "Impulso interno para alcançar metas, persistir diante de obstáculos e aprender com o erro.",
+    chess: "A dama: alcance total, mas serve ao plano do jogo inteiro, até o final da partida.",
+    code: "Commit todo dia: um bug difícil se resolve com constância, não com pressa.",
+  },
+  {
+    piece: "♗", name: "Empatia", question: "Enxergar o que o outro sente e precisa.",
+    meaning: "Compreender as emoções e o ponto de vista dos colegas, gestores e clientes.",
+    chess: "O bispo: vê na diagonal o que a linha reta não mostra. Antecipa o plano do adversário.",
+    code: "Code review e UX: escrever pensando em quem vai ler e em quem vai usar.",
+  },
+  {
+    piece: "♘", name: "Habilidades sociais", question: "Comunicar, negociar e trabalhar em equipe.",
+    meaning: "Construir relações, influenciar de forma positiva e resolver conflitos com clareza.",
+    chess: "O cavalo: salta obstáculos e conecta as outras peças. Sozinho vale pouco, em coordenação decide o jogo.",
+    code: "Git e pull request: várias pessoas no mesmo código, sem sobrescrever o trabalho umas das outras.",
+  },
+];
+
+const cardsEl = document.getElementById("cards");
+const opened = new Set();
+
+function el(tag, props = {}, children = []) {
+  const node = Object.assign(document.createElement(tag), props);
+  node.append(...children);
+  return node;
+}
+
+function analogyBox(label, text) {
+  return el("div", {}, [el("b", { textContent: label }), text]);
+}
+
+function buildCard(concept, index) {
+  const toggle = el("button", { type: "button", ariaExpanded: "false" }, [
+    el("span", { className: "piece", textContent: `${concept.piece}\uFE0E` }),
+    el("span", { className: "name", textContent: concept.question }),
+    el("span", { className: "chev", textContent: ">" }),
+  ]);
+  const answer = el("div", { className: "answer" }, [
+    el("p", {}, [el("b", { textContent: `${concept.name}. ` }), concept.meaning]),
+    el("div", { className: "analogies" }, [
+      analogyBox("No xadrez", concept.chess),
+      analogyBox("No código", concept.code),
+    ]),
+  ]);
+  const card = el("div", { className: "card" }, [toggle, answer]);
+  toggle.addEventListener("click", () => {
+    const isOpen = card.classList.toggle("open");
+    toggle.ariaExpanded = String(isOpen);
+    if (isOpen) opened.add(index);
+    updateProgress();
+  });
+  return card;
+}
+
+function updateProgress() {
+  document.getElementById("count").textContent = `${opened.size}/${CONCEPTS.length}`;
+  document.getElementById("fill").style.width = `${(opened.size / CONCEPTS.length) * 100}%`;
+}
+
+function renderCards() {
+  cardsEl.replaceChildren(...CONCEPTS.map(buildCard));
+  opened.clear();
+  updateProgress();
+}
+
+function renderBoard() {
+  const pieceSquares = { "7,4": "♔", "7,0": "♖", "7,3": "♕", "7,2": "♗", "7,6": "♘" };
+  const squares = [];
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const glyph = pieceSquares[`${row},${col}`];
+      const tone = (row + col) % 2 === 0 ? "light" : "dark";
+      squares.push(el("div", { className: `sq ${tone}${glyph ? " hit" : ""}`, textContent: glyph ? `${glyph}\uFE0E` : "" }));
+    }
+  }
+  document.getElementById("board").replaceChildren(...squares);
+}
+
+document.getElementById("reset").addEventListener("click", renderCards);
+renderBoard();
+renderCards();
+</script>
+</body>
+</html>
